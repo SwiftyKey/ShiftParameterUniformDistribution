@@ -27,6 +27,7 @@ class UniformRandomVariable(IRandomVariable):
         super().__init__()
         self._leftBoundary = leftBoundary
         self._rightBoundary = rightBoundary
+        self._location = (leftBoundary + rightBoundary) / 2
 
     def PDF(self, x: float) -> float:
         return 1 / (self._rightBoundary - self._leftBoundary) if self._leftBoundary <= x <= self._rightBoundary else 0
@@ -42,6 +43,9 @@ class UniformRandomVariable(IRandomVariable):
 
     def Quantile(self, alpha: float) -> float:
         return self._leftBoundary + (self._rightBoundary - self._leftBoundary) * alpha
+
+    def GetLocation(self):
+        return self._location
 
     @staticmethod
     def GetParametersName() -> tuple:

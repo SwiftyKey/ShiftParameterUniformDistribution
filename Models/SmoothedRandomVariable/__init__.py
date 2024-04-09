@@ -56,7 +56,7 @@ class SmoothedRandomVariable(IRandomVariable, IEstimation):
     def PDF(self, x: float) -> float:
         return np.mean([SmoothedRandomVariable._k((x - y) / self._bandwidth) for y in self._sample]) / self._bandwidth
 
-    def CDF(self, x: float) -> np.ndarray:
+    def CDF(self, x: float) -> float:
         return np.mean([SmoothedRandomVariable._K((x - y) / self._bandwidth) for y in self._sample])
 
     def Quantile(self, alpha: float) -> float:
