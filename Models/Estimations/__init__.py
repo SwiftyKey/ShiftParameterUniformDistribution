@@ -15,8 +15,7 @@ class HodgesLehman(IEstimation):
         return [(sample[i] + sample[j]) / 2 for i in range(len(sample)) for j in range(i)]
 
     def Value(self, sample: list) -> float:
-        sortedWalshAverages = sorted(HodgesLehman._WalshAverages(sample))
-        return statistics.median(sortedWalshAverages)
+        return statistics.median(sorted(HodgesLehman._WalshAverages(sample)))
 
 
 class HalfSumOfOrdinalStatistics(IEstimation):
@@ -31,3 +30,8 @@ class HalfSumOfOrdinalStatistics(IEstimation):
 class Variance(IEstimation):
     def Value(self, sample: list) -> float:
         return statistics.variance(sample)
+
+
+class Mean(IEstimation):
+    def Value(self, sample: list) -> float:
+        return statistics.mean(sample)
