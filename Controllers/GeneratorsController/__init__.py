@@ -8,7 +8,7 @@ class GeneratorsController:
         self._generator = generatorType(randomVariable)
         self._sample = None
 
-    def Get(self, n: int):
+    def Get(self, N: int) -> list:
         if not self._sample:
-            self._sample = self._generator.Get(n)
+            self._sample = self._generator.Get(N)
         return self._sample
