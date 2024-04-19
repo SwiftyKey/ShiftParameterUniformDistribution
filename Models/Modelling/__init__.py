@@ -42,7 +42,11 @@ class Modelling:
 
     # Метод, оценивающий СКО оценок
     def EstimateMSE(self) -> np.array:
-        return self._EstimateBiasSqr() + self._EstimateVariance()
+        biasSqr = self._EstimateBiasSqr()
+        variance = self._EstimateVariance()
+        mse = biasSqr + variance
+        print(biasSqr, variance, mse, mse[1] / mse[0])
+        return mse
 
     def GetSamples(self):
         return self._estimationsSample

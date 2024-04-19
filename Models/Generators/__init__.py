@@ -23,7 +23,7 @@ class SimpleRandomNumberGenerator(ARandomNumberGenerator):
 
 
 class TukeyGenerator(ARandomNumberGenerator):
-    def __init__(self, basicRandomVariable: IRandomVariable,
+    def __init__(self, basicRandomVariable: IRandomVariable = UniformRandomVariable,
                  emissionsType: IRandomVariable = UniformRandomVariable,
                  symmetric: bool = True,
                  emissionsShare: float = 0.1):
