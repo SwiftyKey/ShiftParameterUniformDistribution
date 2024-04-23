@@ -5,12 +5,10 @@ import numpy as np
 from tkinter import ttk
 
 from Controllers.GeneratorsController import GeneratorsController, TukeyGeneratorController
-from Controllers.EstimationsController import EstimationsController
 from Controllers.RandomVariablesController import RandomVariablesController
 from Controllers.SmoothedRandomVariableController import SmoothedRandomVariableController
 from Controllers.ModellingController import ModellingController
 
-from Models.Generators import TukeyGenerator
 from Models.RandomVariables import NonParametricRandomVariable
 from Models.Estimations import HodgesLehman, HalfSumOfOrdinalStatistics
 
@@ -60,14 +58,15 @@ class MainWindow:
         self._rightBoundaryEntry = ttk.Entry(self._window)
         self._rightBoundaryEntry.grid(column=2, row=3, padx=10, pady=10)
 
-        self._calculateButton = ttk.Button(self._window, text="Рассчитать", command=self.Calculate)
+        self._calculateButton = ttk.Button(self._window, text="Рассчитать", command=self._Calculate)
         self._calculateButton.grid(column=1, row=7, padx=10, columnspan=2)
 
-    def Calculate(self):
+    def _Calculate(self):
         a = float(self._leftBoundaryEntry.get())
         b = float(self._rightBoundaryEntry.get())
         n = int(self._sampleLengthEntry.get())
         points = n * 2
+        orderLevels = [(n - 1) / n, 0.1, 0.2, 0.3, 0.4, 0.5]
 
         self._randomVariableController = RandomVariablesController(a, b)
         self._generatorController = GeneratorsController(self._randomVariableController.GetRandomVariable())
@@ -91,30 +90,19 @@ class MainWindow:
 
         self._modellingRandomVariableController = ModellingController(
             self._nonParametricGeneratorController.GetGenerator(),
-            [HalfSumOfOrdinalStatistics((n - 1) / n),
-             HalfSumOfOrdinalStatistics(0.1),
-             HalfSumOfOrdinalStatistics(0.2),
-             HalfSumOfOrdinalStatistics(0.3),
-             HalfSumOfOrdinalStatistics(0.4),
-             HalfSumOfOrdinalStatistics(0.5)],
+            [HalfSumOfOrdinalStatistics(orderLevel) for orderLevel in orderLevels],
             2 * n,
             n,
             self._randomVariableController.GetLocation())
         self._modellingRandomVariableController.Run()
 
-        plt.subplot(2, 1, 2)
-        samples = self._modellingRandomVariableController.GetSamples()
-
-        for i in range(samples.shape[1]):
-            sample = samples[:, i]
-            x = np.linspace(min(sample), max(sample), points)
-            self._smoothedRandomVariableController = SmoothedRandomVariableController(sample)
-            y = np.vectorize(self._smoothedRandomVariableController.PDF)(x)
-            plt.plot(x, y)
-        plt.legend([(n - 1) / n, 0.1, 0.2, 0.3, 0.4, 0.5])
+        self._BuildPlot(points,
+                        orderLevels,
+                        self._modellingRandomVariableController.GetSamples(),
+                        2)
 
         minHalfSumMSE = min(
-            zip([(n - 1) / n, 0.1, 0.2, 0.3, 0.4, 0.5], self._modellingRandomVariableController.EstimateMSE()),
+            zip(orderLevels, self._modellingRandomVariableController.EstimateMSE()),
             key=lambda x: x[1])
 
         self._modellingRandomVariableController = ModellingController(
@@ -126,17 +114,9 @@ class MainWindow:
 
         self._modellingRandomVariableController.Run()
 
-        samples = self._modellingRandomVariableController.GetSamples()
-
-        plt.subplot(2, 1, 1)
-        for i in range(samples.shape[1]):
-            sample = samples[:, i]
-            x = np.linspace(min(sample), max(sample), points)
-            self._smoothedRandomVariableController = SmoothedRandomVariableController(sample)
-            y = np.vectorize(self._smoothedRandomVariableController.PDF)(x)
-            plt.plot(x, y)
-
-        plt.legend(("Оценка Ходжеса-Лемана", "Полусумма порядковых статистик"))
+        self._BuildPlot(points,
+                        ("Оценка Ходжеса-Лемана", "Полусумма порядковых статистик"),
+                        self._modellingRandomVariableController.GetSamples())
 
         self._modellingRandomVariableController.EstimateMSE()
 
@@ -145,11 +125,17 @@ class MainWindow:
     def Run(self):
         self._window.mainloop()
 
-    @staticmethod
-    def BuildPlot(xs, ys, colors, plotIndex=0):
-        plt.subplot(2, 1, plotIndex + 1)
-        for x, y, color in zip(xs, ys, colors):
-            plt.plot(x, y, color)
+    def _BuildPlot(self, points: int, legend: tuple, samples: np.array, plotIndex=1):
+        plt.subplot(2, 1, plotIndex)
+
+        for i in range(samples.shape[1]):
+            sample = samples[:, i]
+            x = np.linspace(min(sample), max(sample), points)
+            self._smoothedRandomVariableController = SmoothedRandomVariableController(sample)
+            y = np.vectorize(self._smoothedRandomVariableController.PDF)(x)
+            plt.plot(x, y)
+
+        plt.legend(legend)
 
 
 if __name__ == "__main__":
