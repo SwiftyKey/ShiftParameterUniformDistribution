@@ -68,6 +68,12 @@ class SmoothedRandomVariable(IRandomVariable, IEstimation):
     def GetBandwidth(self) -> float:
         return self._bandwidth
 
+    def GetLocation(self) -> float:
+        raise NotImplementedError
+
+    def GetScale(self) -> float:
+        raise NotImplementedError
+
     @staticmethod
     def GetParametersName() -> tuple:
         return ("bandwidth",)

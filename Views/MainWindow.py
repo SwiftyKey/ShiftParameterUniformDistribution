@@ -28,7 +28,7 @@ class MainWindow:
         self._window = tk.Tk()
         self._window.title("Оценка параметра сдвига")
 
-        self._emission = tk.IntVar()
+        self._emission = tk.IntVar(value=0)
 
         self._noEmissionsRadiobutton = ttk.Radiobutton(text="Без выбросов", value=0,
                                                        variable=self._emission, state="ACTIVE")
@@ -67,6 +67,7 @@ class MainWindow:
         a = float(self._leftBoundaryEntry.get())
         b = float(self._rightBoundaryEntry.get())
         n = int(self._sampleLengthEntry.get())
+        points = n * 2
 
         self._randomVariableController = RandomVariablesController(a, b)
         self._generatorController = GeneratorsController(self._randomVariableController.GetRandomVariable())
@@ -74,23 +75,51 @@ class MainWindow:
         self._nonParametricRandomVariableController = RandomVariablesController(
             sample, randomVariableType=NonParametricRandomVariable)
 
-        match self._emission:
+        match self._emission.get():
             case 0:
                 self._nonParametricGeneratorController = GeneratorsController(
-                    self._nonParametricRandomVariableController.GetRandomVariable())
+                    self._randomVariableController.GetRandomVariable())
                 print("Без выбросов")
             case 1:
                 self._nonParametricGeneratorController = TukeyGeneratorController(
-                    self._nonParametricRandomVariableController.GetRandomVariable())
+                    self._randomVariableController.GetRandomVariable())
                 print("С симметричными выбросами")
             case 2:
                 self._nonParametricGeneratorController = TukeyGeneratorController(
-                    self._nonParametricRandomVariableController.GetRandomVariable(), symmetric=False)
+                    self._randomVariableController.GetRandomVariable(), symmetric=False)
                 print("С асимметричными выбросами")
 
         self._modellingRandomVariableController = ModellingController(
             self._nonParametricGeneratorController.GetGenerator(),
-            [HodgesLehman, HalfSumOfOrdinalStatistics],
+            [HalfSumOfOrdinalStatistics((n - 1) / n),
+             HalfSumOfOrdinalStatistics(0.1),
+             HalfSumOfOrdinalStatistics(0.2),
+             HalfSumOfOrdinalStatistics(0.3),
+             HalfSumOfOrdinalStatistics(0.4),
+             HalfSumOfOrdinalStatistics(0.5)],
+            2 * n,
+            n,
+            self._randomVariableController.GetLocation())
+        self._modellingRandomVariableController.Run()
+
+        plt.subplot(2, 1, 2)
+        samples = self._modellingRandomVariableController.GetSamples()
+
+        for i in range(samples.shape[1]):
+            sample = samples[:, i]
+            x = np.linspace(min(sample), max(sample), points)
+            self._smoothedRandomVariableController = SmoothedRandomVariableController(sample)
+            y = np.vectorize(self._smoothedRandomVariableController.PDF)(x)
+            plt.plot(x, y)
+        plt.legend([(n - 1) / n, 0.1, 0.2, 0.3, 0.4, 0.5])
+
+        minHalfSumMSE = min(
+            zip([(n - 1) / n, 0.1, 0.2, 0.3, 0.4, 0.5], self._modellingRandomVariableController.EstimateMSE()),
+            key=lambda x: x[1])
+
+        self._modellingRandomVariableController = ModellingController(
+            self._nonParametricGeneratorController.GetGenerator(),
+            [HodgesLehman(), HalfSumOfOrdinalStatistics(minHalfSumMSE[0])],
             2 * n,
             n,
             self._randomVariableController.GetLocation())
@@ -98,7 +127,20 @@ class MainWindow:
         self._modellingRandomVariableController.Run()
 
         samples = self._modellingRandomVariableController.GetSamples()
-        point = 100
+
+        plt.subplot(2, 1, 1)
+        for i in range(samples.shape[1]):
+            sample = samples[:, i]
+            x = np.linspace(min(sample), max(sample), points)
+            self._smoothedRandomVariableController = SmoothedRandomVariableController(sample)
+            y = np.vectorize(self._smoothedRandomVariableController.PDF)(x)
+            plt.plot(x, y)
+
+        plt.legend(("Оценка Ходжеса-Лемана", "Полусумма порядковых статистик"))
+
+        self._modellingRandomVariableController.EstimateMSE()
+
+        plt.show()
 
     def Run(self):
         self._window.mainloop()

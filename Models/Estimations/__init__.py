@@ -24,7 +24,8 @@ class HalfSumOfOrdinalStatistics(IEstimation):
 
     def Value(self, sample: list) -> float:
         n = len(sample)
-        return (sample[int(self._orderLevel * n)] + sample[int((1 - self._orderLevel) * n)]) / 2
+        sortedSample = sorted(sample)
+        return (sortedSample[int(self._orderLevel * n)] + sortedSample[int((1 - self._orderLevel) * n)]) / 2
 
 
 class Variance(IEstimation):

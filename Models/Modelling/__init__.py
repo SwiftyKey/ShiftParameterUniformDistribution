@@ -40,12 +40,19 @@ class Modelling:
     def _GetSample(self) -> np.array:
         return self._generator.Get(self._N)
 
+    def _PrintMSE(self, biasSqr: np.array, variance: np.array, mse: np.array):
+        for i in range(len(mse)):
+            index = i + 1
+            print(f"Смещение {index} оценки: {biasSqr[i]:.5f}")
+            print(f"Дисперсия {index} оценки: {variance[i]:.5f}")
+            print(f"СКО {index} оценки: {mse[i]:.5f}")
+
     # Метод, оценивающий СКО оценок
     def EstimateMSE(self) -> np.array:
         biasSqr = self._EstimateBiasSqr()
         variance = self._EstimateVariance()
         mse = biasSqr + variance
-        print(biasSqr, variance, mse, mse[1] / mse[0])
+        self._PrintMSE(biasSqr, variance, mse)
         return mse
 
     def GetSamples(self):

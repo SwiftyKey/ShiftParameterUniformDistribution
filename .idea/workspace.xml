@@ -5,14 +5,12 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="b61abcc2-2af9-4c6b-a4fe-46566226cebb" name="Changes" comment="Добавил модели">
-      <change afterPath="$PROJECT_DIR$/Views/MainWindow.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Views/__init__.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Controllers/GeneratorsController/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/Controllers/GeneratorsController/__init__.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Controllers/RandomVariableController/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/Controllers/RandomVariablesController/__init__.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Models/Estimations/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/Models/Estimations/__init__.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Models/Generators/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/Models/Generators/__init__.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Models/Modelling/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/Models/Modelling/__init__.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Models/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/Models/__init__.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Models/SmoothedRandomVariable/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/Models/SmoothedRandomVariable/__init__.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Views/MainWindow.py" beforeDir="false" afterPath="$PROJECT_DIR$/Views/MainWindow.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />

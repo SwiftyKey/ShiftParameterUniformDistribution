@@ -66,5 +66,5 @@ class TukeyGenerator(ARandomNumberGenerator):
                 emissionsSample = self._AsymmetricalEmissionsSample(N)
 
         sample = SimpleRandomNumberGenerator(self._randomVariable).Get(int((1 - self._emissionsShare) * N))
-
-        return sample + emissionsSample
+        sample1 = np.append(sample, emissionsSample)
+        return sample1
