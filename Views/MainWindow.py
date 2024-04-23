@@ -78,15 +78,15 @@ class MainWindow:
             case 0:
                 self._nonParametricGeneratorController = GeneratorsController(
                     self._randomVariableController.GetRandomVariable())
-                print("Без выбросов")
+                print("\n\nБез выбросов\n")
             case 1:
                 self._nonParametricGeneratorController = TukeyGeneratorController(
                     self._randomVariableController.GetRandomVariable())
-                print("С симметричными выбросами")
+                print("\n\nС симметричными выбросами\n")
             case 2:
                 self._nonParametricGeneratorController = TukeyGeneratorController(
                     self._randomVariableController.GetRandomVariable(), symmetric=False)
-                print("С асимметричными выбросами")
+                print("\n\nС асимметричными выбросами\n")
 
         self._modellingRandomVariableController = ModellingController(
             self._nonParametricGeneratorController.GetGenerator(),
@@ -100,6 +100,7 @@ class MainWindow:
                         orderLevels,
                         self._modellingRandomVariableController.GetSamples(),
                         2)
+        print("Оценка оптимального порядка")
 
         minHalfSumMSE = min(
             zip(orderLevels, self._modellingRandomVariableController.EstimateMSE()),
@@ -117,6 +118,7 @@ class MainWindow:
         self._BuildPlot(points,
                         ("Оценка Ходжеса-Лемана", "Полусумма порядковых статистик"),
                         self._modellingRandomVariableController.GetSamples())
+        print("\nОценка параметра положения")
 
         self._modellingRandomVariableController.EstimateMSE()
 
