@@ -41,7 +41,9 @@ class TukeyGenerator(ARandomNumberGenerator):
         if self._emissionsType is UniformRandomVariable:
             location = self._randomVariable.GetLocation()
             a = np.random.randint(-abs(int(location) + 1) * 5, int(location))
+            a = -1
             b = 2 * location - a
+            print(a, b)
             return self._GenerateEmissions(a, b, N)
         else:
             raise TypeError
@@ -49,8 +51,7 @@ class TukeyGenerator(ARandomNumberGenerator):
     def _AsymmetricalEmissionsSample(self, N: int) -> np.array:
         if self._emissionsType is UniformRandomVariable:
             scale = self._randomVariable.GetScale()
-            location = int(self._randomVariable.GetLocation())
-            a = np.random.randint((location + 1) * 5, (location + 1) * 6)
+            a = 5
             b = a + scale
             return self._GenerateEmissions(a, b, N)
         else:

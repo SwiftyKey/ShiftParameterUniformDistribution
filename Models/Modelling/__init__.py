@@ -43,9 +43,9 @@ class Modelling:
     def _PrintMSE(self, biasSqr: np.array, variance: np.array, mse: np.array):
         for i in range(len(mse)):
             index = i + 1
-            print(f"Смещение {index} оценки:\t{biasSqr[i]:.5f}")
-            print(f"Дисперсия {index} оценки:\t{variance[i]:.5f}")
-            print(f"СКО {index} оценки:\t\t{mse[i]:.5f}")
+            print(f"Смещение {index} оценки:\t{biasSqr[i]:.12f}")
+            print(f"Дисперсия {index} оценки:\t{variance[i]:.12f}")
+            print(f"СКО {index} оценки:\t\t{mse[i]:.12f}")
             print("---------------------------------")
 
     # Метод, оценивающий СКО оценок

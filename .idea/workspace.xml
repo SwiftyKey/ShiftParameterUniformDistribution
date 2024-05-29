@@ -6,6 +6,7 @@
   <component name="ChangeListManager">
     <list default="true" id="b61abcc2-2af9-4c6b-a4fe-46566226cebb" name="Changes" comment="Добавил модели">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Models/Generators/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/Models/Generators/__init__.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Models/Modelling/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/Models/Modelling/__init__.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Views/MainWindow.py" beforeDir="false" afterPath="$PROJECT_DIR$/Views/MainWindow.py" afterDir="false" />
     </list>
@@ -155,7 +156,19 @@
       <map>
         <entry key="MAIN">
           <value>
-            <State />
+            <State>
+              <option name="FILTERS">
+                <map>
+                  <entry key="branch">
+                    <value>
+                      <list>
+                        <option value="master" />
+                      </list>
+                    </value>
+                  </entry>
+                </map>
+              </option>
+            </State>
           </value>
         </entry>
       </map>
@@ -164,5 +177,16 @@
   <component name="VcsManagerConfiguration">
     <MESSAGE value="Добавил модели" />
     <option name="LAST_COMMIT_MESSAGE" value="Добавил модели" />
+  </component>
+  <component name="XDebuggerManager">
+    <breakpoint-manager>
+      <breakpoints>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>vcs://D:/Download/ВУЗ/МС/Курcовая работа/Models/RandomVariables/__init__.py</url>
+          <line>40</line>
+          <option name="timeStamp" value="2" />
+        </line-breakpoint>
+      </breakpoints>
+    </breakpoint-manager>
   </component>
 </project>

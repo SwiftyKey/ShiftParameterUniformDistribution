@@ -128,7 +128,7 @@ class MainWindow:
         self._window.mainloop()
 
     def _BuildPlot(self, points: int, legend: tuple, samples: np.array, plotIndex=1):
-        plt.subplot(2, 1, plotIndex)
+        plt.subplot(1, 2, plotIndex)
 
         for i in range(samples.shape[1]):
             sample = samples[:, i]
