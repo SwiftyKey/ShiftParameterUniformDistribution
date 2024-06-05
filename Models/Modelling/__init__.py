@@ -40,13 +40,20 @@ class Modelling:
     def _GetSample(self) -> np.array:
         return self._generator.Get(self._N)
 
+    def GetConfInterval(self, alpha=0.9) -> np.array:
+        down = int(self._M * (1 - alpha) / 2)
+        up = self._M - down - 1
+        sortedSample = np.sort(self._estimationsSample, axis=0)
+        reduceSample = np.apply_along_axis(lambda sample: sample[down:up], 0, sortedSample)
+        confInterval = [[reduceSample[0, 0], reduceSample[-1, 0]],
+                        [reduceSample[0, 1], reduceSample[-1, 1]]]
+        return confInterval
+
     def _PrintMSE(self, biasSqr: np.array, variance: np.array, mse: np.array):
         for i in range(len(mse)):
-            index = i + 1
-            print(f"Смещение {index} оценки:\t{biasSqr[i]:.12f}")
-            print(f"Дисперсия {index} оценки:\t{variance[i]:.12f}")
-            print(f"СКО {index} оценки:\t\t{mse[i]:.12f}")
-            print("---------------------------------")
+            print(f"{biasSqr[i]:.10f}", end="	")
+            print(f"{variance[i]:.10f}", end="	")
+            print(f"{mse[i]:.10f}")
 
     # Метод, оценивающий СКО оценок
     def EstimateMSE(self) -> np.array:

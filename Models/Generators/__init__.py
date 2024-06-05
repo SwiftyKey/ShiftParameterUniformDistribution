@@ -33,9 +33,7 @@ class TukeyGenerator(ARandomNumberGenerator):
         self._emissionsShare = emissionsShare
 
     def _GenerateEmissions(self, a: float, b: float, N: int) -> np.array:
-        rv = UniformRandomVariable(a, b)
-        us = np.random.uniform(a, b, int(N * self._emissionsShare))
-        return np.vectorize(rv.Quantile)(us)
+        return np.random.uniform(a, b, int(N * self._emissionsShare))
 
     def _SymmetricalEmissionsSample(self, N: int) -> np.array:
         if self._emissionsType is UniformRandomVariable:
@@ -43,7 +41,6 @@ class TukeyGenerator(ARandomNumberGenerator):
             a = np.random.randint(-abs(int(location) + 1) * 5, int(location))
             a = -1
             b = 2 * location - a
-            print(a, b)
             return self._GenerateEmissions(a, b, N)
         else:
             raise TypeError

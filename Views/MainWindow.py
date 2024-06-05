@@ -46,27 +46,15 @@ class MainWindow:
         self._sampleLengthEntry = ttk.Entry(self._window)
         self._sampleLengthEntry.grid(column=2, row=1, padx=10, pady=10)
 
-        self._leftBoundaryLabel = ttk.Label(self._window, text="a: ")
-        self._leftBoundaryLabel.grid(column=1, row=2, padx=10, pady=10)
-
-        self._leftBoundaryEntry = ttk.Entry(self._window)
-        self._leftBoundaryEntry.grid(column=2, row=2, padx=10, pady=10)
-
-        self._rightBoundaryLabel = ttk.Label(self._window, text="b: ")
-        self._rightBoundaryLabel.grid(column=1, row=3, padx=10, pady=10)
-
-        self._rightBoundaryEntry = ttk.Entry(self._window)
-        self._rightBoundaryEntry.grid(column=2, row=3, padx=10, pady=10)
-
         self._calculateButton = ttk.Button(self._window, text="Рассчитать", command=self._Calculate)
         self._calculateButton.grid(column=1, row=7, padx=10, columnspan=2)
 
     def _Calculate(self):
-        a = float(self._leftBoundaryEntry.get())
-        b = float(self._rightBoundaryEntry.get())
+        a = 0
+        b = 1
         n = int(self._sampleLengthEntry.get())
         points = n * 2
-        orderLevels = [(n - 1) / n, 0.1, 0.2, 0.3, 0.4, 0.5]
+        orderLevels = [0, 0.1, 0.2, 0.3, 0.4, 0.5]
 
         self._randomVariableController = RandomVariablesController(a, b)
         self._generatorController = GeneratorsController(self._randomVariableController.GetRandomVariable())
@@ -121,6 +109,8 @@ class MainWindow:
         print("\nОценка параметра положения")
 
         self._modellingRandomVariableController.EstimateMSE()
+        print(self._modellingRandomVariableController._modelling.GetConfInterval())
+        print(min(self._modellingRandomVariableController._modelling.GetConfInterval(), key=lambda x: x[1] - x[0]))
 
         plt.show()
 
